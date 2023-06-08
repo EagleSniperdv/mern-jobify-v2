@@ -1,13 +1,1701 @@
-#### Setup
+#### Create React APP
 
-- create new folder (back-end)
+[VITE](https://vitejs.dev/guide/)
+
+```sh
+npm create vite@latest projectName -- --template react
+```
+
+#### Vite - Folder and File Structure
+
+```sh
+npm i
+```
+
+```sh
+npm run dev
+```
+
+- APP running on http://localhost:5173/
+- .jsx extension
+
+#### Remove Boilerplate
+
+- remove App.css
+- remove all code in index.css
+
+  App.jsx
+
+```jsx
+const App = () => {
+  return <h1>Jobify App</h1>;
+};
+export default App;
+```
+
+#### Project Assets
+
+- get assets folder from complete project
+- copy index.css
+- copy/move README.md (steps)
+  - work independently
+  - reference
+  - troubleshoot
+  - copy
+
+#### Global Styles
+
+- saves times on the setup
+- less lines of css
+- speeds up the development
+
+- if any questions about specific styles
+- Coding Addict - [Default Starter Video](https://youtu.be/UDdyGNlQK5w)
+- Repo - [Default Starter Repo](https://github.com/john-smilga/default-starter)
+
+#### Title and Favicon
+
+- add favicon.ico in public
+- change title and favicon in index.html
+
+```html
+<head>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <title>Jobify</title>
+</head>
+```
+
+- resource [Generate Favicons](https://favicon.io/)
+
+#### Install Packages (Optional)
+
+- yes, specific package versions
+- specific commands will be provided later
+- won't need to stop/start server
+
+```sh
+npm install @tanstack/react-query@4.29.5 axios@1.3.6 dayjs@1.11.7 react-icons@4.8.0 react-router-dom@6.10.0 react-toastify@9.1.2 recharts@2.5.0 styled-components@5.3.10
+
+```
+
+#### Router
+
+[React Router](https://reactrouter.com/en/main)
+
+- version 6.4 brought significant changes (loader and action)
+- pages as independent entities
+- less need for global state
+- more pages
+
+#### Setup Router
+
+- all my examples will include version !!!
+
+```sh
+npm i react-router-dom@6.10.0
+```
+
+App.jsx
+
+```jsx
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <h1>home</h1>,
+  },
+  {
+    path: '/about',
+    element: (
+      <div>
+        <h2>about page</h2>
+      </div>
+    ),
+  },
+]);
+
+const App = () => {
+  return <RouterProvider router={router} />;
+};
+export default App;
+```
+
+#### Create Pages
+
+- create src/pages directory
+- setup index.js and following pages :
+
+  AddJob.jsx
+  Admin.jsx
+  AllJobs.jsx
+  DashboardLayout.jsx
+  DeleteJob.jsx
+  EditJob.jsx
+  Error.jsx
+  HomeLayout.jsx
+  Landing.jsx
+  Login.jsx
+  Profile.jsx
+  Register.jsx
+  Stats.jsx
+
+```jsx
+const AddJob = () => {
+  return <h1>AddJob</h1>;
+};
+export default AddJob;
+```
+
+#### Index
+
+App.jsx
+
+```jsx
+import HomeLayout from '../ pages/HomeLayout';
+```
+
+pages/index.js
+
+```js
+export { default as DashboardLayout } from './DashboardLayout';
+export { default as Landing } from './Landing';
+export { default as HomeLayout } from './HomeLayout';
+export { default as Register } from './Register';
+export { default as Login } from './Login';
+export { default as Error } from './Error';
+export { default as Stats } from './Stats';
+export { default as AllJobs } from './AllJobs';
+export { default as AddJob } from './AddJob';
+export { default as EditJob } from './EditJob';
+export { default as Profile } from './Profile';
+export { default as Admin } from './Admin';
+```
+
+App.jsx
+
+```jsx
+import {
+  HomeLayout,
+  Landing,
+  Register,
+  Login,
+  DashboardLayout,
+  Error,
+} from './pages';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomeLayout />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/dashboard',
+    element: <DashboardLayout />,
+  },
+]);
+```
+
+#### Link Component
+
+- navigate around project
+- client side routing
+
+Register.jsx
+
+```jsx
+import { Link } from 'react-router-dom';
+
+const Register = () => {
+  return (
+    <div>
+      <h1>Register</h1>
+      <Link to='/login'>Login Page</Link>
+    </div>
+  );
+};
+export default Register;
+```
+
+Login.jsx
+
+```jsx
+import { Link } from 'react-router-dom';
+
+const Login = () => {
+  return (
+    <div>
+      <h1>Login</h1>
+      <Link to='/register'>Register Page</Link>
+    </div>
+  );
+};
+export default Login;
+```
+
+#### Nested Routes
+
+- what about Navbar?
+- decide on root (parent route)
+- make path relative
+- for time being only home layout will be visible
+
+App.jsx
+
+```jsx
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomeLayout />,
+    children: [
+      {
+        path: 'register',
+        element: <Register />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'dashboard',
+        element: <DashboardLayout />,
+      },
+    ],
+  },
+]);
+```
+
+HomeLayout.jsx
+
+```jsx
+import { Outlet } from 'react-router-dom';
+
+const HomeLayout = () => {
+  return (
+    <main>
+      {/* add things like Navbar */}
+      {/* <h1>home layout</h1> */}
+      <Outlet />
+    </main>
+  );
+};
+export default HomeLayout;
+```
+
+#### Index (Home) Page
+
+App.jsx
+
+```jsx
+{
+    path: '/',
+    element: <HomeLayout />,
+    children: [
+      {
+        index: true,
+        element: <Landing />,
+      },
+...
+      ]
+}
+```
+
+#### Error Page
+
+- bubbles up
+
+App.jsx
+
+```jsx
+{
+    path: '/',
+    element: <HomeLayout />,
+    errorElement: <Error />,
+    ...
+}
+```
+
+Error.jsx
+
+```jsx
+import { Link, useRouteError } from 'react-router-dom';
+
+const Error = () => {
+  const error = useRouteError();
+  console.log(error);
+  return (
+    <div>
+      <h1>Error Page !!!</h1>
+      <Link to='/dashboard'>back home</Link>
+    </div>
+  );
+};
+export default Error;
+```
+
+#### Styled Components
+
+- CSS in JS
+- Styled Components
+- have logic and styles in component
+- no name collisions
+- apply javascript logic
+- [Styled Components Docs](https://styled-components.com/)
+- [Styled Components Course](https://www.udemy.com/course/styled-components-tutorial-and-project-course/?referralCode=9DABB172FCB2625B663F)
+
+```sh
+npm install styled-components@5.3.10
+```
+
+```js
+import styled from 'styled-components';
+
+const El = styled.el`
+  // styles go here
+`;
+```
+
+- no name collisions, since unique class
+- vscode-styled-components extension
+- colors and bugs
+
+Landing.jsx
+
+```jsx
+import styled from 'styled-components';
+
+const Landing = () => {
+  return (
+    <div>
+      <h1>Landing</h1>
+      <StyledButton>Click Me</StyledButton>
+    </div>
+  );
+};
+
+const StyledButton = styled.button`
+  background-color: red;
+  color: white;
+`;
+export default Landing;
+```
+
+#### Style Entire React Component
+
+```js
+const Wrapper = styled.el``;
+
+const Component = () => {
+  return (
+    <Wrapper>
+      <h1> Component</h1>
+    </Wrapper>
+  );
+};
+```
+
+- only responsible for styling
+- wrappers folder in assets
+
+Landing.jsx
+
+```jsx
+import styled from 'styled-components';
+
+const Landing = () => {
+  return (
+    <Wrapper>
+      <h1>Landing</h1>
+      <div className='content'>some content</div>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  background-color: red;
+  h1 {
+    color: white;
+  }
+  .content {
+    background-color: blue;
+    color: yellow;
+  }
+`;
+export default Landing;
+```
+
+#### Landing Page
+
+```jsx
+import main from '../assets/images/main.svg';
+import { Link } from 'react-router-dom';
+import logo from '../assets/images/logo.svg';
+import styled from 'styled-components';
+const Landing = () => {
+  return (
+    <StyledWrapper>
+      <nav>
+        <img src={logo} alt='jobify' className='logo' />
+      </nav>
+      <div className='container page'>
+        {/* info */}
+        <div className='info'>
+          <h1>
+            job <span>tracking</span> app
+          </h1>
+          <p>
+            I'm baby wayfarers hoodie next level taiyaki brooklyn cliche blue
+            bottle single-origin coffee chia. Aesthetic post-ironic venmo,
+            quinoa lo-fi tote bag adaptogen everyday carry meggings +1 brunch
+            narwhal.
+          </p>
+          <Link to='/register' className='btn register-link'>
+            Register
+          </Link>
+          <Link to='/login' className='btn'>
+            Login / Demo User
+          </Link>
+        </div>
+        <img src={main} alt='job hunt' className='img main-img' />
+      </div>
+    </StyledWrapper>
+  );
+};
+
+const StyledWrapper = styled.section`
+  nav {
+    width: var(--fluid-width);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+  }
+  .page {
+    min-height: calc(100vh - var(--nav-height));
+    display: grid;
+    align-items: center;
+    margin-top: -3rem;
+  }
+  h1 {
+    font-weight: 700;
+    span {
+      color: var(--primary-500);
+    }
+    margin-bottom: 1.5rem;
+  }
+  p {
+    line-height: 2;
+    color: var(--text-secondary-color);
+    margin-bottom: 1.5rem;
+    max-width: 35em;
+  }
+  .register-link {
+    margin-right: 1rem;
+  }
+  .main-img {
+    display: none;
+  }
+  .btn {
+    padding: 0.75rem 1rem;
+  }
+  @media (min-width: 992px) {
+    .page {
+      grid-template-columns: 1fr 400px;
+      column-gap: 3rem;
+    }
+    .main-img {
+      display: block;
+    }
+  }
+`;
+
+export default Landing;
+```
+
+#### Assets/Wrappers
+
+- css optional
+
+  Landing.jsx
+
+```jsx
+import Wrapper from '../assets/wrappers/LandingPage';
+```
+
+#### Logo Component
+
+- create src/components/Logo.jsx
+- import logo and setup component
+- in components setup index.js import/export (just like pages)
+- replace in Landing
+
+  Logo.jsx
+
+```jsx
+import logo from '../assets/images/logo.svg';
+
+const Logo = () => {
+  return <img src={logo} alt='jobify' className='logo' />;
+};
+
+export default Logo;
+```
+
+#### Logo and Images
+
+- logo built in Figma
+- [Cool Images](https://undraw.co/)
+
+#### Error Page
+
+Error.jsx
+
+```jsx
+import { Link, useRouteError } from 'react-router-dom';
+import img from '../assets/images/not-found.svg';
+import Wrapper from '../assets/wrappers/ErrorPage';
+
+const Error = () => {
+  const error = useRouteError();
+  console.log(error);
+  if (error.status === 404) {
+    return (
+      <Wrapper>
+        <div>
+          <img src={img} alt='not found' />
+          <h3>Ohh! page not found</h3>
+          <p>We can't seem to find the page you're looking for</p>
+          <Link to='/dashboard'>back home</Link>
+        </div>
+      </Wrapper>
+    );
+  }
+  return (
+    <Wrapper>
+      <div>
+        <h3>something went wrong</h3>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default Error;
+```
+
+#### Error Page CSS (optional)
+
+assets/wrappers/Error.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.main`
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    max-width: 600px;
+    display: block;
+    margin-bottom: 2rem;
+    margin-top: -3rem;
+  }
+  h3 {
+    margin-bottom: 0.5rem;
+  }
+  p {
+    line-height: 1.5;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-secondary-color);
+  }
+  a {
+    color: var(--primary-500);
+    text-decoration: underline;
+    text-transform: capitalize;
+  }
+`;
+
+export default Wrapper;
+```
+
+#### Register Page
+
+Register.jsx
+
+```jsx
+import { Logo } from '../components';
+import Wrapper from '../assets/wrappers/RegisterAndLoginPage';
+import { Link } from 'react-router-dom';
+
+const Register = () => {
+  return (
+    <Wrapper>
+      <form className='form'>
+        <Logo />
+        <h4>Register</h4>
+        <div className='form-row'>
+          <label htmlFor='name' className='form-label'>
+            name
+          </label>
+          <input
+            type='text'
+            id='name'
+            name='name'
+            className='form-input'
+            defaultValue='john'
+            required
+          />
+        </div>
+
+        <button type='submit' className='btn btn-block'>
+          submit
+        </button>
+        <p>
+          Already a member?
+          <Link to='/login' className='member-btn'>
+            Login
+          </Link>
+        </p>
+      </form>
+    </Wrapper>
+  );
+};
+export default Register;
+```
+
+- required attribute
+
+  In HTML, the "required" attribute is used to indicate that a form input field must be filled out before the form can be submitted. It is typically applied to input elements such as text fields, checkboxes, and radio buttons. When the "required" attribute is added to an input element, the browser will prevent form submission if the field is left empty, providing a validation message to prompt the user to enter the required information.
+
+- default value
+
+In React, the defaultValue prop is used to set the initial or default value of an input component. It is similar to the value attribute in HTML, but with a slightly different behavior.
+
+#### FormRow Component
+
+- create components/FormRow.jsx (export/import)
+
+FormRow.jsx
+
+```jsx
+const FormRow = ({ type, name, labelText, defaultValue = '' }) => {
+  return (
+    <div className='form-row'>
+      <label htmlFor={name} className='form-label'>
+        {labelText || name}
+      </label>
+      <input
+        type={type}
+        id={name}
+        name={name}
+        className='form-input'
+        defaultValue={defaultValue}
+        required
+      />
+    </div>
+  );
+};
+
+export default FormRow;
+```
+
+Register.jsx
+
+```jsx
+import { Logo, FormRow } from '../components';
+import Wrapper from '../assets/wrappers/RegisterAndLoginPage';
+import { Link } from 'react-router-dom';
+
+const Register = () => {
+  return (
+    <Wrapper>
+      <form className='form'>
+        <Logo />
+        <h4>Register</h4>
+        <FormRow type='text' name='name' />
+        <FormRow type='text' name='lastName' labelText='last name' />
+        <FormRow type='text' name='location' />
+        <FormRow type='email' name='email' />
+
+        <FormRow type='password' name='password' />
+
+        <button type='submit' className='btn btn-block'>
+          submit
+        </button>
+        <p>
+          Already a member?
+          <Link to='/login' className='member-btn'>
+            Login
+          </Link>
+        </p>
+      </form>
+    </Wrapper>
+  );
+};
+export default Register;
+```
+
+#### Login Page
+
+Login Page
+
+```jsx
+import { Logo, FormRow } from '../components';
+import Wrapper from '../assets/wrappers/RegisterAndLoginPage';
+
+import { Link } from 'react-router-dom';
+
+const Login = () => {
+  return (
+    <Wrapper>
+      <form className='form'>
+        <Logo />
+        <h4>Login</h4>
+        <FormRow type='email' name='email' defaultValue='john@gmail.com' />
+        <FormRow type='password' name='password' defaultValue='secret123' />
+        <button type='submit' className='btn btn-block'>
+          submit
+        </button>
+        <button type='button' className='btn btn-block'>
+          explore the app
+        </button>
+        <p>
+          Already a member?
+          <Link to='/register' className='member-btn'>
+            Register
+          </Link>
+        </p>
+      </form>
+    </Wrapper>
+  );
+};
+export default Login;
+```
+
+#### Register and Login CSS (optional)
+
+assets/wrappers/RegisterAndLoginPage.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.section`
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  .logo {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 1.38rem;
+  }
+  .form {
+    max-width: 400px;
+    border-top: 5px solid var(--primary-500);
+  }
+
+  h4 {
+    text-align: center;
+    margin-bottom: 1.38rem;
+  }
+  p {
+    margin-top: 1rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .btn {
+    margin-top: 1rem;
+  }
+  .member-btn {
+    font-size: inherit;
+    background: transparent;
+    border: transparent;
+    color: var(--primary-500);
+    cursor: pointer;
+    letter-spacing: var(--letter-spacing);
+    margin-left: 0.25rem;
+  }
+`;
+export default Wrapper;
+```
+
+#### Dashboard Pages
+
+App.jsx
+
+```jsx
+ {
+        path: 'dashboard',
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <AddJob />,
+          },
+          { path: 'stats', element: <Stats /> },
+          {
+            path: 'all-jobs',
+            element: <AllJobs />,
+          },
+
+          {
+            path: 'profile',
+            element: <Profile />,
+          },
+          {
+            path: 'admin',
+            element: <Admin />,
+          },
+        ],
+      },
+```
+
+Dashboard.jsx
+
+```jsx
+import { Outlet } from 'react-router-dom';
+
+const DashboardLayout = () => {
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
+};
+export default DashboardLayout;
+```
+
+#### Navbar, BigSidebar and SmallSidebar
+
+- in components create :
+  Navbar.jsx
+  BigSidebar.jsx
+  SmallSidebar.jsx
+
+DashboardLayout.jsx
+
+```jsx
+import { Outlet } from 'react-router-dom';
+
+import Wrapper from '../assets/wrappers/Dashboard';
+import { Navbar, BigSidebar, SmallSidebar } from '../components';
+
+const Dashboard = () => {
+  return (
+    <Wrapper>
+      <main className='dashboard'>
+        {/* <SmallSidebar  /> */}
+        <BigSidebar />
+        <div>
+          <Navbar />
+          <div className='dashboard-page'>
+            <Outlet />
+          </div>
+        </div>
+      </main>
+    </Wrapper>
+  );
+};
+
+export default Dashboard;
+```
+
+#### Dashboard Layout - CSS (optional)
+
+assets/wrappers/DashboardLayout.jsx
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.section`
+  .dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .dashboard-page {
+    width: 90vw;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  @media (min-width: 992px) {
+    .dashboard {
+      grid-template-columns: auto 1fr;
+    }
+    .dashboard-page {
+      width: 90%;
+    }
+  }
+`;
+export default Wrapper;
+```
+
+#### Dashboard Context
+
+```jsx
+import { Outlet } from 'react-router-dom';
+
+import Wrapper from '../assets/wrappers/Dashboard';
+import { Navbar, BigSidebar, SmallSidebar } from '../components';
+
+import { useState, createContext, useContext } from 'react';
+const DashboardContext = createContext();
+const Dashboard = () => {
+  // temp
+  const user = { name: 'john' };
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const toggleDarkTheme = () => {
+    console.log('toggle dark theme');
+  };
+
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
+  const logoutUser = async () => {
+    console.log('logout user');
+  };
+  return (
+    <DashboardContext.Provider
+      value={{
+        user,
+        showSidebar,
+        isDarkTheme,
+        toggleDarkTheme,
+        toggleSidebar,
+        logoutUser,
+      }}
+    >
+      <Wrapper>
+        <main className='dashboard'>
+          <SmallSidebar />
+          {/* <BigSidebar /> */}
+          <div>
+            <Navbar />
+            <div className='dashboard-page'>
+              <Outlet />
+            </div>
+          </div>
+        </main>
+      </Wrapper>
+    </DashboardContext.Provider>
+  );
+};
+
+export const useDashboardContext = () => useContext(DashboardContext);
+
+export default Dashboard;
+```
+
+#### React Icons
+
+[React Icons](https://react-icons.github.io/react-icons/)
+
+```sh
+npm install react-icons@4.8.0
+```
+
+Navbar.jsx
+
+```jsx
+
+import {FaHome} from 'react-icons/fa'
+const Navbar = () => {
+  return (
+    <div>
+      <h2>navbar</h2>
+      <FaHome>
+    </div>
+  )
+}
+
+```
+
+#### Navbar - Initial Setup
+
+```jsx
+import Wrapper from '../assets/wrappers/Navbar';
+import { FaAlignLeft } from 'react-icons/fa';
+import Logo from './Logo';
+
+import { useDashboardContext } from '../pages/DashboardLayout';
+const Navbar = () => {
+  const { toggleSidebar } = useDashboardContext();
+  return (
+    <Wrapper>
+      <div className='nav-center'>
+        <button type='button' className='toggle-btn' onClick={toggleSidebar}>
+          <FaAlignLeft />
+        </button>
+        <div>
+          <Logo />
+          <h4 className='logo-text'>dashboard</h4>
+        </div>
+        <div className='btn-container'>toggle/logout</div>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default Navbar;
+```
+
+#### Navbar CSS (optional)
+
+assets/wrappers/Navbar.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.nav`
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.1);
+  background: var(--background-secondary-color);
+  .logo {
+    display: flex;
+    align-items: center;
+    width: 100px;
+  }
+  .nav-center {
+    display: flex;
+    width: 90vw;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .toggle-btn {
+    background: transparent;
+    border-color: transparent;
+    font-size: 1.75rem;
+    color: var(--primary-500);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  .btn-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-text {
+    display: none;
+  }
+  @media (min-width: 992px) {
+    position: sticky;
+    top: 0;
+
+    .nav-center {
+      width: 90%;
+    }
+    .logo {
+      display: none;
+    }
+    .logo-text {
+      display: block;
+    }
+  }
+`;
+export default Wrapper;
+```
+
+#### Links
+
+- create src/utils/links.jsx
+
+```jsx
+import React from 'react';
+
+import { IoBarChartSharp } from 'react-icons/io5';
+import { MdQueryStats } from 'react-icons/md';
+import { FaWpforms } from 'react-icons/fa';
+import { ImProfile } from 'react-icons/im';
+import { MdAdminPanelSettings } from 'react-icons/md';
+
+const links = [
+  { text: 'add job', path: '.', icon: <FaWpforms /> },
+  { text: 'all jobs', path: 'all-jobs', icon: <MdQueryStats /> },
+  { text: 'stats', path: 'stats', icon: <IoBarChartSharp /> },
+  { text: 'profile', path: 'profile', icon: <ImProfile /> },
+  { text: 'admin', path: 'admin', icon: <MdAdminPanelSettings /> },
+];
+
+export default links;
+```
+
+- in a second, we will discuss why '.' in "add job"
+
+#### SmallSidebar
+
+SmallSidebar
+
+```jsx
+import Wrapper from '../assets/wrappers/SmallSidebar';
+import { FaTimes } from 'react-icons/fa';
+
+import Logo from './Logo';
+import { NavLink } from 'react-router-dom';
+import links from '../utils/links';
+import { useDashboardContext } from '../pages/DashboardLayout';
+
+const SmallSidebar = () => {
+  const { showSidebar, toggleSidebar } = useDashboardContext();
+  return (
+    <Wrapper>
+      <div
+        className={
+          showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'
+        }
+      >
+        <div className='content'>
+          <button type='button' className='close-btn' onClick={toggleSidebar}>
+            <FaTimes />
+          </button>
+          <header>
+            <Logo />
+          </header>
+          <div className='nav-links'>
+            {links.map((link) => {
+              const { text, path, icon } = link;
+
+              return (
+                <NavLink
+                  to={path}
+                  key={text}
+                  className='nav-link'
+                  onClick={toggleSidebar}
+                  // will discuss in a second
+                  end
+                >
+                  <span className='icon'>{icon}</span>
+                  {text}
+                </NavLink>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default SmallSidebar;
+```
+
+- cover '.' path ,active class and 'end' prop
+
+#### Small Sidebar CSS (optional)
+
+assets/wrappers/SmallSidebar.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.aside`
+  @media (min-width: 992px) {
+    display: none;
+  }
+  .sidebar-container {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+    opacity: 0;
+    transition: var(--transition);
+    visibility: hidden;
+  }
+  .show-sidebar {
+    z-index: 99;
+    opacity: 1;
+    visibility: visible;
+  }
+  .content {
+    background: var(--background-secondary-color);
+    width: var(--fluid-width);
+    height: 95vh;
+    border-radius: var(--border-radius);
+    padding: 4rem 2rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border-color: transparent;
+    font-size: 2rem;
+    color: var(--red-dark);
+    cursor: pointer;
+  }
+  .nav-links {
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary-color);
+    padding: 1rem 0;
+    text-transform: capitalize;
+    transition: var(--transition);
+  }
+  .nav-link:hover {
+    color: var(--primary-500);
+  }
+
+  .nav-link:hover .icon {
+    color: var(--primary-500);
+  }
+  .icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    display: grid;
+    place-items: center;
+    transition: var(--transition);
+  }
+  .active {
+    color: var(--primary-500);
+  }
+  .active .icon {
+    color: var(--primary-500);
+  }
+`;
+export default Wrapper;
+```
+
+#### NavLinks
+
+- components/NavLinks.jsx
+
+```jsx
+import { useDashboardContext } from '../pages/DashboardLayout';
+import links from '../utils/links';
+import { NavLink } from 'react-router-dom';
+
+const NavLinks = () => {
+  const { user, toggleSidebar } = useDashboardContext();
+
+  return (
+    <div className='nav-links'>
+      {links.map((link) => {
+        const { text, path, icon } = link;
+        // admin user
+        return (
+          <NavLink
+            to={path}
+            key={text}
+            onClick={toggleSidebar}
+            className='nav-link'
+            end
+          >
+            <span className='icon'>{icon}</span>
+            {text}
+          </NavLink>
+        );
+      })}
+    </div>
+  );
+};
+
+export default NavLinks;
+```
+
+#### Big Sidebar
+
+```jsx
+import NavLinks from './NavLinks';
+import Logo from '../components/Logo';
+import Wrapper from '../assets/wrappers/BigSidebar';
+import { useDashboardContext } from '../pages/DashboardLayout';
+
+const BigSidebar = () => {
+  const { showSidebar } = useDashboardContext();
+  return (
+    <Wrapper>
+      <div
+        className={
+          showSidebar ? 'sidebar-container ' : 'sidebar-container show-sidebar'
+        }
+      >
+        <div className='content'>
+          <header>
+            <Logo />
+          </header>
+          <NavLinks isBigSidebar />
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default BigSidebar;
+```
+
+#### BigSidebar CSS (optional)
+
+assets/wrappers/BigSidebar.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.aside`
+  display: none;
+  @media (min-width: 992px) {
+    display: block;
+    box-shadow: 1px 0px 0px 0px rgba(0, 0, 0, 0.1);
+    .sidebar-container {
+      background: var(--background-secondary-color);
+      min-height: 100vh;
+      height: 100%;
+      width: 250px;
+      margin-left: -250px;
+      transition: margin-left 0.3s ease-in-out;
+    }
+    .content {
+      position: sticky;
+      top: 0;
+    }
+    .show-sidebar {
+      margin-left: 0;
+    }
+    header {
+      height: 6rem;
+      display: flex;
+      align-items: center;
+      padding-left: 2.5rem;
+    }
+    .nav-links {
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      color: var(--text-secondary-color);
+      padding: 1rem 0;
+      padding-left: 2.5rem;
+      text-transform: capitalize;
+      transition: padding-left 0.3s ease-in-out;
+    }
+    .nav-link:hover {
+      padding-left: 3rem;
+      color: var(--primary-500);
+      transition: var(--transition);
+    }
+    .nav-link:hover .icon {
+      color: var(--primary-500);
+      transition: var(--transition);
+    }
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      display: grid;
+      place-items: center;
+    }
+    .active {
+      color: var(--primary-500);
+    }
+    .active .icon {
+      color: var(--primary-500);
+    }
+    .pending {
+      background: var(--background-color);
+    }
+  }
+`;
+export default Wrapper;
+```
+
+#### LogoutContainer
+
+components/LogoutContainer.jsx
+
+```jsx
+import { FaUserCircle, FaCaretDown } from 'react-icons/fa';
+import Wrapper from '../assets/wrappers/LogoutContainer';
+import { useState } from 'react';
+import { useDashboardContext } from '../pages/DashboardLayout';
+
+const LogoutContainer = () => {
+  const [showLogout, setShowLogout] = useState(false);
+  const { user, logoutUser } = useDashboardContext();
+
+  return (
+    <Wrapper>
+      <button
+        type='button'
+        className='btn logout-btn'
+        onClick={() => setShowLogout(!showLogout)}
+      >
+        {user.avatar ? (
+          <img src={user.avatar} alt='avatar' className='img' />
+        ) : (
+          <FaUserCircle />
+        )}
+
+        {user?.name}
+        <FaCaretDown />
+      </button>
+      <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
+        <button type='button' className='dropdown-btn' onClick={logoutUser}>
+          logout
+        </button>
+      </div>
+    </Wrapper>
+  );
+};
+export default LogoutContainer;
+```
+
+#### LogoutContainer CSS (optional)
+
+assets/wrappers/LogoutContainer.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  position: relative;
+
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0 0.5rem;
+    position: relative;
+    box-shadow: var(--shadow-2);
+    color: var(--white);
+    background: var(--primary-500);
+    transition: 0s;
+  }
+  .img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+  }
+  .dropdown {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    box-shadow: var(--shadow-2);
+    text-align: center;
+    visibility: hidden;
+    border-radius: var(--border-radius);
+
+    background: var(--primary-500);
+  }
+  .show-dropdown {
+    visibility: visible;
+  }
+  .dropdown-btn {
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    background: transparent;
+    border-color: transparent;
+    color: var(--white);
+    letter-spacing: var(--letter-spacing);
+    text-transform: capitalize;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+export default Wrapper;
+```
+
+#### ThemeToggle
+
+components/ThemeToggle.jsx
+
+```jsx
+import { BsFillSunFill, BsFillMoonFill } from 'react-icons/bs';
+import Wrapper from '../assets/wrappers/ThemeToggle';
+import { useDashboardContext } from '../pages/DashboardLayout';
+
+const ThemeToggle = () => {
+  const { isDarkTheme, toggleDarkTheme } = useDashboardContext();
+  return (
+    <Wrapper onClick={toggleDarkTheme}>
+      {isDarkTheme ? (
+        <BsFillSunFill className='toggle-icon' />
+      ) : (
+        <BsFillMoonFill className='toggle-icon' />
+      )}
+    </Wrapper>
+  );
+};
+
+export default ThemeToggle;
+```
+
+Navbar.jsx
+
+```jsx
+<div className='btn-container'>
+  <ThemeToggle />
+</div>
+```
+
+#### ThemeToggle CSS (optional)
+
+assets/wrappers/ThemeToggle.js
+
+```js
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  background: transparent;
+  border-color: transparent;
+  width: 3.5rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  .toggle-icon {
+    font-size: 1.15rem;
+    color: var(--text-color);
+  }
+`;
+export default Wrapper;
+```
+
+#### Dark Theme - Logic
+
+DashboardLayout.jsx
+
+```jsx
+const toggleDarkTheme = () => {
+  const newDarkTheme = !isDarkTheme;
+  setIsDarkTheme(newDarkTheme);
+  document.body.classList.toggle('dark-theme', newDarkTheme);
+  localStorage.setItem('darkTheme', newDarkTheme);
+};
+```
+
+#### Access Theme
+
+App.jsx
+
+```jsx
+const checkDefaultTheme = () => {
+  const userPrefersDarkMode = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  ).matches;
+
+  const isDarkTheme =
+    localStorage.getItem('darkTheme') === 'true' || userPrefersDarkMode;
+  document.body.classList.toggle('dark-theme', isDarkTheme);
+  return isDarkTheme;
+};
+
+const isDarkThemeEnabled = checkDefaultTheme();
+
+{
+path: 'dashboard',
+element: <DashboardLayout isDarkThemeEnabled={isDarkThemeEnabled} />,
+}
+```
+
+DashboardLayout.jsx
+
+```jsx
+const Dashboard = ({ isDarkThemeEnabled }) => {
+  const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled);
+};
+```
+
+#### Dark Theme CSS
+
+index.css
+
+```css
+:root {
+  /* DARK MODE */
+
+  --dark-mode-bg-color: #333;
+  --dark-mode-text-color: #f0f0f0;
+  --dark-mode-bg-secondary-color: #3f3f3f;
+  --dark-mode-text-secondary-color: var(--grey-300);
+
+  --background-color: var(--grey-50);
+  --text-color: var(--grey-900);
+  --background-secondary-color: var(--white);
+  --text-secondary-color: var(--grey-500);
+}
+
+.dark-theme {
+  --text-color: var(--dark-mode-text-color);
+  --background-color: var(--dark-mode-bg-color);
+  --text-secondary-color: var(--dark-mode-text-secondary-color);
+  --background-secondary-color: var(--dark-mode-bg-secondary-color);
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+}
+```
+
+#### Folder Setup
+
+- IMPORTANT !!!!
+- remove existing .git folder (if any) from client
+
+Mac
+
+```sh
+rm -rf .git
+```
+
+Windows
+
+```sh
+rmdir -Force -Recurse .git
+```
+
+```sh
+rd /s /q .git
+```
+
+- Windows commands were shared by students and I have not personally tested them.
+- git status should return :
+  "fatal: Not a git repository (or any of the parent directories): .git"
+- create jobify directory
+- copy/paste client
+- move README to root
+
+#### Setup Server
+
 - create package.json
 
 ```sh
 npm init -y
 ```
 
-- create README.md and copy values from final
 - create and test server.js
 
 ```sh
@@ -40,6 +1728,33 @@ console.log(value);
 - don't forget about .js extension
 - for named imports, names must match
 
+#### Source Control
+
+- create .gitignore
+- copy values from client/.gitignore
+- create Github Repo (optional)
+
+#### Install Packages and Setup Install Script
+
+```sh
+npm install bcryptjs@2.4.3 concurrently@8.0.1 cookie-parser@1.4.6 dayjs@1.11.7 dotenv@16.0.3 express@4.18.2 express-async-errors@3.1.1 express-validator@7.0.1 http-status-codes@2.2.0 jsonwebtoken@9.0.0 mongoose@7.0.5 morgan@1.10.0 multer@1.4.5-lts.1 nanoid@4.0.2 nodemon@2.0.22
+
+```
+
+package.json
+
+```json
+"scripts": {
+    "setup-project": "npm i && cd client && npm i"
+  },
+```
+
+- install packages in root and client
+
+```sh
+npm run setup-project
+```
+
 #### Setup Basic Express
 
 - install express and nodemon.
@@ -47,8 +1762,16 @@ console.log(value);
 - create a basic home route which sends back "hello world"
 - setup a script with nodemon package.
 
+[Express Docs](https://expressjs.com/)
+
+Express is a fast and minimalist web application framework for Node.js. It simplifies the process of building web applications by providing a robust set of features for handling HTTP requests, routing, middleware, and more. Express allows you to create server-side applications and APIs easily, with a focus on simplicity and flexibility.
+
+[Nodemon Docs](https://nodemon.io/)
+
+Nodemon is a development tool that improves the developer experience. It monitors your Node.js application for any changes in the code and automatically restarts the server whenever a change is detected. This eliminates the need to manually restart the server after every code modification, making the development process more efficient and productive. Nodemon is commonly used during development to save time and avoid the hassle of manual server restarts.
+
 ```sh
-npm i express nodemon
+npm i express@4.18.2 nodemon@2.0.22
 ```
 
 server.js
@@ -70,13 +1793,15 @@ package.json
 
 ```json
 "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
     "dev": "nodemon server.js"
   },
 ```
 
 #### Thunder Client
+
+Thunder Client is a popular Visual Studio Code extension that facilitates API testing and debugging. It provides a user-friendly interface for making HTTP requests and viewing the responses, allowing developers to easily test APIs, examine headers, and inspect JSON/XML payloads. Thunder Client offers features such as environment variables, request history, and the ability to save and organize requests for efficient development workflows.
+
+[Thunder Client](https://www.thunderclient.com/)
 
 - install and test home route
 
@@ -107,7 +1832,7 @@ HTTP request logger middleware for node.js
 Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env.
 
 ```sh
-npm i morgan dotenv
+npm i morgan@1.10.0 dotenv@16.0.3
 ```
 
 ```js
@@ -118,7 +1843,7 @@ app.use(morgan('dev'));
 
 - create .env file in the root
 - add PORT and NODE_ENV
-- setup .gitignore
+- add .env to .gitignore
 
 server.js
 
@@ -172,8 +1897,10 @@ package.json
 
 [Nanoid](https://www.npmjs.com/package/nanoid)
 
+The nanoid package is a software library used for generating unique and compact identifiers in web applications or databases. It creates short and URL-safe IDs by combining random characters from a set of 64 characters. Nanoid is a popular choice due to its simplicity, efficiency, and collision-resistant nature.
+
 ```sh
-npm i nanoid
+npm i nanoid@4.0.2
 ```
 
 server.js
@@ -181,12 +1908,12 @@ server.js
 ```js
 import { nanoid } from 'nanoid';
 
-const jobs = [
-  { id: nanoid(), company: 'apple', position: 'front-end developer' }
-  { id: nanoid(), company: 'google', position: 'back-end developer' }
-  ];
+let jobs = [
+  { id: nanoid(), company: 'apple', position: 'front-end' },
+  { id: nanoid(), company: 'google', position: 'back-end' },
+];
 
-  app.get('/api/v1/jobs', (req, res) => {
+app.get('/api/v1/jobs', (req, res) => {
   res.status(200).json({ jobs });
 });
 ```
@@ -252,18 +1979,30 @@ app.delete('/api/v1/jobs/:id', (req, res) => {
 });
 ```
 
-#### Not Found and Error
+#### Not Found Middleware
 
 ```js
 app.use('*', (req, res) => {
   res.status(404).json({ msg: 'not found' });
 });
+```
 
+#### Error Middleware
+
+```js
 app.use((err, req, res, next) => {
   console.log(err);
   res.status(500).json({ msg: 'something went wrong' });
 });
 ```
+
+#### Not Found and Error Middleware
+
+The "not found" middleware in Express.js is used when a request is made to a route that does not exist. It catches these requests and responds with a 404 status code, indicating that the requested resource was not found.
+
+On the other hand, the "error" middleware in Express.js is used to handle any errors that occur during the processing of a request. It is typically used to catch unexpected errors or exceptions that are not explicitly handled in the application code. It logs the error and sends a 500 status code, indicating an internal server error.
+
+In summary, the "not found" middleware is specifically designed to handle requests for non-existent routes, while the "error" middleware is a catch-all for handling unexpected errors that occur during request processing.
 
 - make a request to "/jobss"
 
@@ -367,7 +2106,7 @@ import {
   createJob,
   updateJob,
   deleteJob,
-} from '../controllers/job-controller.js';
+} from '../controllers/jobController.js';
 
 // router.get('/', getAllJobs);
 // router.post('/', createJob);
@@ -381,7 +2120,7 @@ export default router;
 server.js
 
 ```js
-import jobRouter from './routers/job-router.js';
+import jobRouter from './routers/jobRouter.js';
 app.use('/api/v1/jobs', jobRouter);
 ```
 
@@ -389,12 +2128,18 @@ app.use('/api/v1/jobs', jobRouter);
 
 [MongoDb](https://www.mongodb.com/)
 
+MongoDB is a popular NoSQL database that provides a flexible and scalable approach to storing and retrieving data. It uses a document-oriented model, where data is organized into collections of JSON-like documents. MongoDB offers high performance, horizontal scalability, and easy integration with modern development frameworks, making it suitable for handling diverse data types and handling large-scale applications.
+
+MongoDB Atlas is a fully managed cloud database service provided by MongoDB, offering automated deployment, scaling, and monitoring of MongoDB clusters, allowing developers to focus on building their applications without worrying about infrastructure management.
+
 #### Mongoosejs
 
 [Mongoose](https://mongoosejs.com/)
 
+Mongoose is an Object Data Modeling (ODM) library for Node.js that provides a straightforward and elegant way to interact with MongoDB. It allows developers to define schemas and models for their data, providing structure and validation. Mongoose also offers features like data querying, middleware, and support for data relationships, making it a powerful tool for building MongoDB-based applications.
+
 ```sh
-npm i mongoose
+npm i mongoose@7.0.5
 ```
 
 server.js
@@ -415,7 +2160,7 @@ try {
 
 #### Job Model
 
-models/Job.js
+models/JobModel.js
 
 ```js
 import mongoose from 'mongoose';
@@ -424,7 +2169,7 @@ const JobSchema = new mongoose.Schema(
   {
     company: String,
     position: String,
-    status: {
+    jobStatus: {
       type: String,
       enum: ['interview', 'declined', 'pending'],
       default: 'pending',
@@ -450,7 +2195,7 @@ export default mongoose.model('Job', JobSchema);
 jobController.js
 
 ```js
-import Job from '../models/Job.js';
+import Job from '../models/JobModel.js';
 
 export const createJob = async (req, res) => {
   const { company, position } = req.body;
@@ -465,8 +2210,9 @@ jobController.js
 
 ```js
 export const createJob = async (req, res) => {
+  const { company, position } = req.body;
   try {
-    const job = await Job.create(req.body);
+    const job = await Job.create('something');
     res.status(201).json({ job });
   } catch (error) {
     res.status(500).json({ msg: 'server error' });
@@ -476,10 +2222,12 @@ export const createJob = async (req, res) => {
 
 #### express-async-errors
 
+The "express-async-errors" package is an Express.js middleware that helps handle errors that occur within asynchronous functions. It catches unhandled errors inside async/await functions and forwards them to Express.js's error handling middleware, preventing the Node.js process from crashing. It simplifies error handling in Express.js applications by allowing you to write asynchronous code without worrying about manually catching and forwarding errors.
+
 [Express Async Errors](https://www.npmjs.com/package/express-async-errors)
 
 ```sh
-npm i express-async-errors
+npm i express-async-errors@3.1.1
 ```
 
 - setup import at the top !!!
@@ -488,6 +2236,17 @@ npm i express-async-errors
 
 ```js
 import 'express-async-errors';
+```
+
+jobController.js
+
+```js
+export const createJob = async (req, res) => {
+  const { company, position } = req.body;
+
+  const job = await Job.create({ company, position });
+  res.status(201).json({ job });
+};
 ```
 
 #### Get All Jobs
@@ -535,29 +2294,61 @@ export const deleteJob = async (req, res) => {
 ```js
 export const updateJob = async (req, res) => {
   const { id } = req.params;
-  const updatedJob = await Job.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!updatedJob) {
+  const job = await Job.findById(id);
+  if (!job) {
     return res.status(404).json({ msg: `no job with id ${id}` });
   }
+
+  const updatedJob = await Job.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
   res.status(200).json({ job: updatedJob });
 };
 ```
 
 #### Status Codes
 
+A library for HTTP status codes is useful because it provides a comprehensive and standardized set of codes that represent the outcome of HTTP requests. It allows developers to easily understand and handle different scenarios during web development, such as successful responses, client or server errors, redirects, and more. By using a status code library, developers can ensure consistent and reliable communication between servers and clients, leading to better error handling and improved user experience.
+
 [Http Status Codes](https://www.npmjs.com/package/http-status-codes)
 
 ```sh
-npm i http-status-codes
+npm i http-status-codes@2.2.0
 
+```
+
+- refactor 200 response in all controllers
+
+jobController.js
+
+```js
+res.status(StatusCodes.OK).json({ jobs });
+```
+
+createJob
+
+```js
+res.status(StatusCodes.CREATED).json({ job });
 ```
 
 #### Custom Error Class
 
-customErrors.js
+jobController
+
+```js
+export const getJob = async (req, res) => {
+  ....
+  if (!job) {
+    throw new Error('no job with that id');
+    // return res.status(404).json({ msg: `no job with id ${id}` });
+  }
+  ...
+};
+
+```
+
+errors/customErrors.js
 
 ```js
 import { StatusCodes } from 'http-status-codes';
@@ -593,9 +2384,7 @@ jobController.js
 ```js
 import { NotFoundError } from '../customErrors.js';
 
-if (!job) {
-  throw new NotFoundError(`no job with id ${id}`);
-}
+if (!job) throw new NotFoundError(`no job with id : ${id}`);
 ```
 
 middleware/errorHandlerMiddleware.js
@@ -623,6 +2412,11 @@ app.use(errorHandlerMiddleware);
 
 #### Bad Request Error
 
+400 BAD_REQUEST Bad Request
+401 UNAUTHORIZED Unauthorized
+403 FORBIDDEN Forbidden
+404 NOT_FOUND Not Found
+
 customErrors.js
 
 ```js
@@ -633,6 +2427,20 @@ export class BadRequestError extends Error {
     this.statusCode = StatusCodes.BAD_REQUEST;
   }
 }
+export class UnauthenticatedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'UnauthenticatedError';
+    this.statusCode = StatusCodes.UNAUTHORIZED;
+  }
+}
+export class UnauthorizedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'UnauthorizedError';
+    this.statusCode = StatusCodes.FORBIDDEN;
+  }
+}
 ```
 
 #### Validation Layer
@@ -640,7 +2448,7 @@ export class BadRequestError extends Error {
 [Express Validator](https://express-validator.github.io/docs/)
 
 ```sh
-npm i express-validator
+npm i express-validator@7.0.1
 ```
 
 #### Test Route
@@ -666,9 +2474,10 @@ app.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorMessages = errors.array().map((error) => error.msg);
-      console.log(errorMessages);
       return res.status(400).json({ errors: errorMessages });
     }
+  },
+  (req, res) => {
     const { name } = req.body;
     res.json({ msg: `hello ${name}` });
   }
@@ -677,12 +2486,14 @@ app.post(
 
 #### Validation Middleware
 
+middleware/validationMiddleware.js
+
 ```js
 import { body, validationResult } from 'express-validator';
-
-const withValidationErrors = (validateFn) => {
+import { BadRequestError } from '../errors/customErrors';
+const withValidationErrors = (validateValues) => {
   return [
-    validateFn,
+    validateValues,
     (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -694,7 +2505,7 @@ const withValidationErrors = (validateFn) => {
   ];
 };
 
-const validateTest = withValidationErrors([
+export const validateTest = withValidationErrors([
   body('name')
     .notEmpty()
     .withMessage('name is required')
@@ -702,8 +2513,61 @@ const validateTest = withValidationErrors([
     .withMessage('name must be between 3 and 50 characters long')
     .trim(),
 ]);
+```
 
-export { validateTest };
+#### Remove Test Case From Server
+
+#### Setup Constants
+
+utils/constants.js
+
+```js
+export const JOB_STATUS = {
+  PENDING: 'pending',
+  INTERVIEW: 'interview',
+  DECLINED: 'declined',
+};
+
+export const JOB_TYPE = {
+  FULL_TIME: 'full-time',
+  PART_TIME: 'part-time',
+  INTERNSHIP: 'internship',
+};
+
+export const JOB_SORT_BY = {
+  NEWEST_FIRST: 'newest',
+  OLDEST_FIRST: 'oldest',
+  ASCENDING: 'a-z',
+  DESCENDING: 'z-a',
+};
+```
+
+models/JobModel.js
+
+```js
+import mongoose from 'mongoose';
+import { JOB_STATUS, JOB_TYPE } from '../utils/constants';
+const JobSchema = new mongoose.Schema(
+  {
+    company: String,
+    position: String,
+    jobStatus: {
+      type: String,
+      enum: Object.values(JOB_STATUS),
+      default: JOB_STATUS.PENDING,
+    },
+    jobType: {
+      type: String,
+      enum: Object.values(JOB_TYPE),
+      default: JOB_TYPE.FULL_TIME,
+    },
+    jobLocation: {
+      type: String,
+      default: 'my city',
+    },
+  },
+  { timestamps: true }
+);
 ```
 
 #### Validate Create Job
@@ -711,17 +2575,17 @@ export { validateTest };
 validationMiddleware.js
 
 ```js
-const validateJobInput = withValidationErrors([
+import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js';
+
+export const validateJobInput = withValidationErrors([
   body('company').notEmpty().withMessage('company is required'),
   body('position').notEmpty().withMessage('position is required'),
   body('jobLocation').notEmpty().withMessage('job location is required'),
-  body('status')
+  body('jobStatus')
     .isIn(Object.values(JOB_STATUS))
     .withMessage('invalid status value'),
   body('jobType').isIn(Object.values(JOB_TYPE)).withMessage('invalid job type'),
 ]);
-
-export { validateTest, validateJobInput };
 ```
 
 ```js
@@ -735,27 +2599,39 @@ router
   .delete(deleteJob);
 ```
 
+- create job request
+
+```json
+{
+  "company": "coding addict",
+  "position": "backend-end",
+  "jobStatus": "pending",
+  "jobType": "full-time",
+  "jobLocation": "florida"
+}
+```
+
 #### Validate ID Parameter
 
 validationMiddleware.js
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const validateIdParam = withValidationErrors([
+import { param } from 'express-validator';
+
+export const validateIdParam = withValidationErrors([
   param('id')
     .custom((value) => mongoose.Types.ObjectId.isValid(value))
     .withMessage('invalid MongoDB id'),
 ]);
-
-export { validateTest, validateJobInput, validateIdParam };
 ```
 
 #### Clean DB
 
 #### User Model
 
-models/User.js
+models/UserModel.js
 
 ```js
 import mongoose from 'mongoose';
@@ -787,14 +2663,12 @@ export default mongoose.model('User', UserSchema);
 controllers/authController.js
 
 ```js
-const register = async (req, res) => {
+export const register = async (req, res) => {
   res.send('register');
 };
-const login = async (req, res) => {
+export const login = async (req, res) => {
   res.send('register');
 };
-
-export { register, login };
 ```
 
 routers/authRouter.js
@@ -815,7 +2689,7 @@ server.js
 ```js
 import authRouter from './routers/authRouter.js';
 
-app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/auth', authRouter);
 ```
 
 #### Create User - Initial Setup
@@ -824,13 +2698,23 @@ authController.js
 
 ```js
 import { StatusCodes } from 'http-status-codes';
-import User from '../models/User.js';
+import User from '../models/UserModel.js';
 
-const register = async (req, res) => {
-  const { email, name, password } = req.body;
-  const user = await User.create({ name, email, password });
+export const register = async (req, res) => {
+  const user = await User.create(req.body);
   res.status(StatusCodes.CREATED).json({ user });
 };
+```
+
+- register user request
+
+```json
+{
+  "name": "john",
+  "email": "john@gmail.com",
+  "password": "secret123",
+  "lastName": "smith"
+}
 ```
 
 #### Admin Role
@@ -839,10 +2723,10 @@ authController.js
 
 ```js
 // first registered user is an admin
-const isFirstAccount = (await User.countDocuments({})) === 0;
-const role = isFirstAccount ? 'admin' : 'user';
+const isFirstAccount = (await User.countDocuments()) === 0;
+req.body.role = isFirstAccount ? 'admin' : 'user';
 
-const user = await User.create({ name, email, password, role });
+const user = await User.create(req.body);
 ```
 
 #### Validate User
@@ -850,7 +2734,9 @@ const user = await User.create({ name, email, password, role });
 validationMiddleware.js
 
 ```js
-const validateRegisterInput = withValidationErrors([
+import User from '../models/UserModel.js';
+
+export const validateRegisterInput = withValidationErrors([
   body('name').notEmpty().withMessage('name is required'),
   body('email')
     .notEmpty()
@@ -860,7 +2746,7 @@ const validateRegisterInput = withValidationErrors([
     .custom(async (email) => {
       const user = await User.findOne({ email });
       if (user) {
-        throw new Error('email already exists');
+        throw new BadRequestError('email already exists');
       }
       return true;
     }),
@@ -885,7 +2771,7 @@ router.post('/register', validateRegisterInput, register);
 [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 
 ```sh
-npm i bcryptjs
+npm i bcryptjs@2.4.3
 
 ```
 
@@ -895,14 +2781,12 @@ authController.js
 import bcrypt from 'bcryptjs';
 
 const register = async (req, res) => {
+  // a random value that is added to the password before hashing
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  const user = await User.create({
-    name,
-    email,
-    password: hashedPassword,
-    role,
-  });
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+  req.body.password = hashedPassword;
+
+  const user = await User.create(req.body);
 };
 ```
 
@@ -952,8 +2836,104 @@ authController.js
 import { hashPassword } from '../utils/passwordUtils.js';
 
 const register = async (req, res) => {
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(req.body.password);
+  req.body.password = hashedPassword;
+
+  const user = await User.create(req.body);
+  res.status(StatusCodes.CREATED).json({ msg: 'user created' });
 };
+```
+
+#### Login User
+
+- login user request
+
+```json
+{
+  "email": "john@gmail.com",
+  "password": "secret123"
+}
+```
+
+validationMiddleware.js
+
+```js
+export const validateLoginInput = withValidationErrors([
+  body('email')
+    .notEmpty()
+    .withMessage('email is required')
+    .isEmail()
+    .withMessage('invalid email format'),
+  body('password').notEmpty().withMessage('password is required'),
+]);
+```
+
+authRouter.js
+
+```js
+import { validateLoginInput } from '../middleware/validationMiddleware.js';
+
+router.post('/login', validateLoginInput, login);
+```
+
+#### Unauthenticated Error
+
+authController.js
+
+```js
+import { UnauthenticatedError } from '../errors/customErrors.js';
+
+const login = async (req, res) => {
+  // check if user exists
+  // check if password is correct
+
+  const user = await User.findOne({ email });
+
+  if (!user) throw new UnauthenticatedError('invalid credentials');
+
+  res.send('login route');
+};
+```
+
+#### Compare Password
+
+passwordUtils.js
+
+```js
+export async function comparePassword(password, hashedPassword) {
+  const isMatch = await bcrypt.compare(password, hashedPassword);
+  return isMatch;
+}
+```
+
+authController.js
+
+```js
+import { hashPassword, comparePassword } from '../utils/passwordUtils.js';
+
+const login = async (req, res) => {
+  // check if user exists
+  // check if password is correct
+
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) throw new UnauthenticatedError('invalid credentials');
+
+  const isPasswordCorrect = await comparePassword(
+    req.body.password,
+    user.password
+  );
+
+  if (!isPasswordCorrect) throw new UnauthenticatedError('invalid credentials');
+  res.send('login route');
+};
+```
+
+Refactor
+
+```js
+const isValidUser = user && (await comparePassword(password, user.password));
+if (!isValidUser) throw new UnauthenticatedError('invalid credentials');
 ```
 
 #### JSON Web Token
@@ -963,7 +2943,7 @@ A JSON Web Token (JWT) is a compact and secure way of transmitting data between 
 [Useful Resource](https://jwt.io/introduction)
 
 ```sh
-npm i jsonwebtoken
+npm i jsonwebtoken@9.0.0
 ```
 
 utils/tokenUtils.js
@@ -979,25 +2959,24 @@ export const createJWT = (payload) => {
 };
 ```
 
+JWT_SECRET represents the secret key used to sign the JWT. When creating a JWT, the payload (data) is signed with this secret key to generate a unique token. The secret key should be kept secure and should not be disclosed to unauthorized parties.
+
+JWT_EXPIRES_IN specifies the expiration time for the JWT. It determines how long the token remains valid before it expires. The value of JWT_EXPIRES_IN is typically provided as a duration, such as "1h" for one hour or "7d" for seven days. Once the token expires, it is no longer considered valid and can't be used for authentication or authorization purposes.
+
+These environment variables (JWT_SECRET and JWT_EXPIRES_IN) are read from the system environment during runtime, allowing for flexibility in configuration without modifying the code.
+
 authController.js
 
 ```js
 import { createJWT } from '../utils/tokenUtils.js';
 
 const token = createJWT({ userId: user._id, role: user.role });
-
-res.status(StatusCodes.CREATED).json({
-  user: {
-    name: user.name,
-    email: user.email,
-    lastName: user.lastName,
-    location: user.location,
-    role: user.role,
-  },
-  // ONLY TEMPORARY !!!
-  token,
-});
+console.log(token);
 ```
+
+#### Test JWT (optional)
+
+[JWT](https://jwt.io/)
 
 #### HTTP Only Cookie
 
@@ -1047,107 +3026,8 @@ export const getAllJobs = async (req, res) => {
 };
 ```
 
-#### Login User
-
-validationMiddleware.js
-
-```js
-const validateLoginInput = withValidationErrors([
-  body('email')
-    .notEmpty()
-    .withMessage('email is required')
-    .isEmail()
-    .withMessage('invalid email format'),
-  body('password').notEmpty().withMessage('password is required'),
-]);
-export { validateLoginInput };
-```
-
-authRouter.js
-
-```js
-import { validateLoginInput } from '../middleware/validationMiddleware.js';
-
-router.post('/login', validateLoginInput, login);
-```
-
-#### Unauthenticated Error
-
-customErrors.js
-
-```js
-export class UnauthenticatedError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = 'UnauthenticatedError';
-    this.statusCode = StatusCodes.UNAUTHORIZED;
-  }
-}
-```
-
-authController.js
-
-```js
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  // check if user exists
-  // check if password is correct
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new UnauthenticatedError('invalid credentials');
-  }
-
-  res.send('login route');
-};
-```
-
-#### Compare Password
-
-passwordUtils.js
-
-```js
-export async function comparePassword(password, hashedPassword) {
-  const isMatch = await bcrypt.compare(password, hashedPassword);
-  return isMatch;
-}
-```
-
-authController.js
-
-```js
-import { hashPassword, comparePassword } from '../utils/passwordUtils.js';
-
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  // check if user exists
-  // check if password is correct
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new UnauthenticatedError('invalid credentials');
-  }
-  const isPasswordCorrect = await comparePassword(password, user.password);
-
-  if (!isPasswordCorrect) {
-    throw new UnauthenticatedError('invalid credentials');
-  }
-  res.send('login route');
-};
-```
-
-Refactor
-
-```js
-const isValidUser = user && (await comparePassword(password, user.password));
-if (!isValidUser) {
-  throw new UnauthenticatedError('invalid credentials');
-}
-```
+<!-- STOPPED HERE AND STARTED WORKING ON THE COCKTAILS -->
+<!-- CONTINUE FROM HERE -->
 
 #### Clean DB
 
@@ -1361,916 +3241,11 @@ export const deleteJob = async (req, res) => {
   const { id } = req.params;
   const job = await Job.findById(id);
 
-  if (!job) {
-    throw new NotFoundError(`no job with id ${id}`);
-  }
+  if (!job) throw new NotFoundError(`no job with id ${id}`);
 
   checkPermissions(req.user, job.createdBy);
   const removedJob = await Job.findByIdAndDelete(id);
 
   res.status(StatusCodes.OK).json({ job: removedJob });
 };
-```
-
-#### Front End
-
-[Vite](https://vitejs.dev/guide/)
-
-```sh
-# npm 6.x
-npm create vite@latest client --template react
-
-# npm 7+, extra double-dash is needed:
-npm create vite@latest client -- --template react
-```
-
-#### Client Setup and Overview
-
-```sh
-npm install
-```
-
-```sh
-npm run dev
-```
-
-#### Remove Boilerplate
-
-App.jsx
-
-```js
-function App() {
-  return (
-    <>
-      <h1>React App</h1>
-    </>
-  );
-}
-
-export default App;
-```
-
-#### Concurrently
-
-```sh
-npm i concurrently
-```
-
-[Concurrently](https://www.npmjs.com/package/concurrently)
-
-package.json
-
-```json
- "scripts": {
-    "watch": "concurrently \"node --watch server.js \" \"cd client && npm run dev\"",
-    "dev": "nodemon server.js",
-    "watch-server": "node --watch server.js "
-  },
-```
-
-#### Client Packages
-
-!!! IMPORTANT !!!
-
-```sh
-cd client
-```
-
-```sh
-npm i axios react-icons react-router-dom recharts styled-components dayjs react-toastify
-```
-
-#### Get Assets From Final
-
-- get final project copy/paste assets directory
-
-#### Title and Favicon
-
-- change title in index.html
-- replace favicon.ico in public
-
-```html
-<head>
-  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-  <title>Jobify</title>
-</head>
-```
-
-- resource [Generate Favicons](https://favicon.io/)
-
-#### Global Styles
-
-- CSS in JS (styled-components)
-- saves times on the setup
-- less lines of css
-- speeds up the development
-- if any questions about specific styles
-- Coding Addict - [Default Starter Video](https://youtu.be/UDdyGNlQK5w)
-- Repo - [Default Starter Repo](https://github.com/john-smilga/default-starter)
-
-#### Setup Initial Pages and Render Landing
-
-- create pages directory
-- setup Landing, Register, Error and Dashboard components/pages
-- in VITE we MUST use .jsx extension
-- import Landing in App.jsx
-
-#### Landing Page - Structure
-
-```js
-import main from '../assets/images/main.svg';
-import logo from '../assets/images/logo.svg';
-
-const Landing = () => {
-  return (
-    <>
-      <nav>
-        <img src={logo} alt='jobify' className='logo' />
-      </nav>
-      <div className='container page'>
-        {/* info */}
-        <div className='info'>
-          <h1>
-            job <span>tracking</span> app
-          </h1>
-          <p>
-            I'm baby wayfarers hoodie next level taiyaki brooklyn cliche blue
-            bottle single-origin coffee chia. Aesthetic post-ironic venmo,
-            quinoa lo-fi tote bag adaptogen everyday carry meggings +1 brunch
-            narwhal.
-          </p>
-          <button className='btn btn-hero'>Login/Register</button>
-        </div>
-        <img src={main} alt='job hunt' className='img main-img' />
-      </div>
-    </>
-  );
-};
-
-export default Landing;
-```
-
-#### Styled Components
-
-- CSS in JS
-- Styled Components
-- have logic and styles in component
-- no name collisions
-- apply javascript logic
-- [Styled Components Docs](https://styled-components.com/)
-- [Styled Components Course](https://www.udemy.com/course/styled-components-tutorial-and-project-course/?referralCode=9DABB172FCB2625B663F)
-
-```sh
-npm install styled-components
-```
-
-```js
-import styled from 'styled-components';
-
-const El = styled.el`
-  // styles go here
-`;
-```
-
-```js
-import styled from 'styled-components';
-
-const Landing = () => {
-  return (
-    <>
-      <StyledButton className='btn btn-hero'>Login/Register</StyledButton>
-    </>
-  );
-};
-
-const StyledButton = styled.button`
-  background: red;
-`;
-```
-
-- no name collisions, since unique class
-- vscode-styled-components extension
-- colors and bugs
-
-#### Style Entire React Component
-
-```js
-const Wrapper = styled.el``;
-
-const Component = () => {
-  return (
-    <Wrapper>
-      <h1> Component</h1>
-    </Wrapper>
-  );
-};
-```
-
-- only responsible for styling
-- wrappers folder in assets
-
-Landing.jsx
-
-```jsx
-import StyledWrapper from '../assets/wrappers/LandingPage.js';
-
-const Landing = () => {
-  return <StyledWrapper>....</StyledWrapper>;
-};
-
-export default Landing;
-```
-
-#### Logo and Images
-
-- logo built in Figma
-- [Cool Images](https://undraw.co/)
-
-#### Logo
-
-- create <b>components</b> folder in src
-- create Logo.jsx
-- move import and image logic
-- export as default
-- utilize index.js
-
-components/index.js
-
-```js
-// first approach
-
-import Logo from './Logo';
-import SomeOtherComponent from './SomeOtherComponent';
-
-export { Logo, SomeOtherComponent };
-
-// second approach
-export { default as Logo } from './Logo';
-export { default as SomeOtherComponent } from './SomeOtherComponent';
-```
-
-#### React Router
-
-(React Router Docs)[https://reactrouter.com/en/main]
-
-```sh
-npm i react-router-dom
-```
-
-App.jsx
-
-```js
-import Landing from './pages/Landing';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <h1>home page</h1>,
-  },
-  {
-    path: '/about',
-    element: (
-      <div>
-        <h1>about page</h1>
-      </div>
-    ),
-  },
-]);
-
-function App() {
-  return <RouterProvider router={router} />;
-}
-
-export default App;
-```
-
-#### Setup Pages
-
-- create index.js in pages
-- export all pages
-- setup routes in App.jsx
-
-App.jsx
-
-```js
-import { Landing, Error, Dashboard, Register } from './pages';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Dashboard />,
-  },
-  {
-    path: 'landing',
-    element: <Landing />,
-  },
-  {
-    path: 'register',
-    element: <Register />,
-  },
-]);
-
-function App() {
-  return <RouterProvider router={router} />;
-}
-
-export default App;
-```
-
-#### Link Component
-
-```js
-<nav>
-  <Link to='/'>Dashboard</Link>
-  <Link to='/register'>Register</Link>
-  <Link to='/landing'>Home</Link>
-</nav>
-```
-
-Dashboard.jsx
-
-```js
-import { Link } from 'react-router-dom';
-const Dashboard = () => {
-  return (
-    <div>
-      <h1>Dashboard Page</h1>
-
-      <Link to='/landing'>Landing page</Link>
-      <br />
-      <Link to='/register'>Register page</Link>
-    </div>
-  );
-};
-
-export default Dashboard;
-```
-
-Landing.jsx
-
-```js
-import { Link } from 'react-router-dom';
-
-const Landing = () => {
-  return (
-    <StyledWrapper>
-      ...
-      <Link to='/register' className='btn btn-hero'>
-        Login/Register
-      </Link>
-      ...
-    </StyledWrapper>
-  );
-};
-
-export default Landing;
-```
-
-#### Error Page
-
-App.jsx
-
-```js
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Dashboard />,
-    errorElement: <Error />,
-  },
-  .....
-]);
-```
-
-Error.jsx
-
-```jsx
-import { Link } from 'react-router-dom';
-import img from '../assets/images/not-found.svg';
-import Wrapper from '../assets/wrappers/ErrorPage';
-
-const Error = () => {
-  return (
-    <Wrapper>
-      <div>
-        <img src={img} alt='not found' />
-        <h3>Ohh! page not found</h3>
-        <p>We can't seem to find the page you're looking for</p>
-        <Link to='/'>back home</Link>
-      </div>
-    </Wrapper>
-  );
-};
-
-export default Error;
-```
-
-#### Register Page
-
-```js
-import { Logo } from '../components';
-import Wrapper from '../assets/wrappers/RegisterPage';
-
-const Register = () => {
-  return (
-    <Wrapper>
-      <form className='form'>
-        <Logo />
-        <h3>Register</h3>
-        {/* name input */}
-        <div className='form-row'>
-          <label htmlFor='name' className='form-label'>
-            name
-          </label>
-          <input type='text' id='name' name='name' className='form-input' />
-        </div>
-
-        <button type='submit' className='btn btn-block'>
-          submit
-        </button>
-      </form>
-    </Wrapper>
-  );
-};
-export default Register;
-```
-
-#### Form Row Component
-
-FormRow.jsx
-
-```js
-const FormRow = ({ type, name, labelText }) => {
-  return (
-    <div className='form-row'>
-      <label htmlFor={name} className='form-label'>
-        {labelText || name}
-      </label>
-      <input type={type} id={name} name={name} className='form-input' />
-    </div>
-  );
-};
-
-export default FormRow;
-```
-
-Register.jsx
-
-```js
-import { Logo, FormRow } from '../components';
-import Wrapper from '../assets/wrappers/RegisterPage';
-
-const Register = () => {
-  return (
-    <Wrapper>
-      <form className='form'>
-        <Logo />
-        <h4>Register</h4>
-
-        <FormRow type='text' name='name' />
-        <FormRow type='email' name='email' />
-        <FormRow type='password' name='password' />
-        <button type='submit' className='btn btn-block'>
-          submit
-        </button>
-      </form>
-    </Wrapper>
-  );
-};
-export default Register;
-```
-
-#### Toggle Member
-
-Register.js
-
-```jsx
-import { Logo, FormRow } from '../components';
-import Wrapper from '../assets/wrappers/RegisterPage';
-import { useState } from 'react';
-
-const Register = () => {
-  const [isMember, setIsMember] = useState(true);
-
-  return (
-    <Wrapper>
-      <form className='form'>
-        <Logo />
-        <h4>{isMember ? 'Login' : 'Register'}</h4>
-        {!isMember && <FormRow type='text' name='name' />}
-        <FormRow type='email' name='email' />
-        <FormRow type='password' name='password' />
-        <button type='submit' className='btn btn-block'>
-          submit
-        </button>
-        <p>
-          {isMember ? 'Not a member yet?' : 'Already a member?'}
-          <button
-            type='button'
-            onClick={() => setIsMember(!isMember)}
-            className='member-btn'
-          >
-            {isMember ? 'Register' : 'Login'}
-          </button>
-        </p>
-      </form>
-    </Wrapper>
-  );
-};
-export default Register;
-```
-
-#### FormData API
-
-Register.jsx
-
-```js
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.currentTarget);
-
-  const values = [...formData.values()];
-  const isEmpty = values.includes('');
-  if (isEmpty) {
-    console.log('empty values');
-  }
-  const data = Object.fromEntries(formData);
-  console.log(data);
-};
-return (
-  <Wrapper>
-    <form className='form' onSubmit={handleSubmit}>
-      ...
-    </form>
-  </Wrapper>
-);
-```
-
-#### Custom Hook
-
-- create utils/getFormValues
-
-```js
-const getFormValues = (form) => {
-  const formData = new FormData(form);
-
-  const values = [...formData.values()];
-  const isEmpty = values.includes('');
-  const data = Object.fromEntries(formData);
-  return { isEmpty, data };
-};
-
-export default getFormValues;
-```
-
-Register.jsx
-
-```js
-import getFormValues from '../utils/getFormValues';
-const Register = () => {
-  const [isMember, setIsMember] = useState(true);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { isEmpty, data } = getFormValues(e.currentTarget);
-
-    if (isEmpty) {
-      console.log('empty values');
-      return;
-    }
-    console.log(data);
-  };
-  ....
-};
-```
-
-#### React Toastify
-
-[React Toastify](https://www.npmjs.com/package/react-toastify)
-
-```sh
-npm i react-toastify
-```
-
-main.jsx
-
-```js
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
-import './index.css';
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-    <ToastContainer position='top-center' />
-  </React.StrictMode>
-);
-```
-
-Register.js
-
-```js
-import { toast } from 'react-toastify';
-
-if (isEmpty) {
-  toast.error('Please fill in all fields');
-  return;
-}
-```
-
-- modifications
-
-position
-
-<ToastContainer position='top-center' >
-
-index.css
-
-```css
-.Toastify__toast {
-  text-transform: capitalize;
-}
-```
-
-#### CORS Error
-
-server.js
-
-```js
-// test route
-app.get('/api/v1/test', (req, res) => {
-  res.json({ msg: 'api test route ' });
-});
-```
-
-Register.jsx
-
-```jsx
-const fetchData = async () => {
-  try {
-    const response = await fetch('http://localhost:5100/api/v1/test');
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-useEffect(() => {
-  fetchData();
-}, []);
-```
-
-```js
-try {
-  const response = await fetch('/api/v1/test');
-  const data = await response.json();
-  console.log(data);
-} catch (error) {
-  console.log(error);
-}
-```
-
-vite.config.js
-
-```js
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5100/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  },
-});
-```
-
-#### Axios Intro and Get Request
-
-#### Axios Post Request
-
-```js
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { isEmpty, data } = getFormValues(e.currentTarget);
-
-  if (isEmpty) {
-    toast.error('Please fill in all fields');
-    return;
-  }
-  try {
-    const endpoint = isMember ? '/api/v1/auth/login' : '/api/v1/auth/register';
-    const response = await axios.post(endpoint, data);
-    const message = isMember ? 'Login successful' : 'Registration successful';
-    toast.success(message);
-  } catch (error) {
-    toast.error(error.response.data.msg);
-    console.log(error);
-  }
-};
-```
-
-#### Setup Global Context
-
-- create contex.jsx
-
-```js
-import { useState, createContext, useContext } from 'react';
-
-const AppContext = createContext();
-
-export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-
-  return (
-    <AppContext.Provider value={{ user, setUser }}>
-      {children}
-    </AppContext.Provider>
-  );
-};
-
-export const useGlobalContext = () => useContext(AppContext);
-```
-
-main.jsx
-
-```js
-import { AppProvider } from './context.jsx';
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <AppProvider>
-    <App />
-    <ToastContainer position='top-center' />
-  </AppProvider>
-);
-```
-
-#### Set User and Navigate to Dashboard
-
-Register.jsx
-
-```js
-import { useNavigate } from 'react-router-dom';
-import { useGlobalContext } from '../context';
-
-const Register = () => {
-  const [isMember, setIsMember] = useState(true);
-  const { setUser } = useGlobalContext();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-     .....
-      setUser(response.data);
-      const message = isMember ? 'Login successful' : 'Registration successful';
-      toast.success(message);
-      navigate('/');
-    .....
-  };
-};
-```
-
-#### Temp Register Page
-
-Register
-
-```js
-import { Logo, FormRow } from '../components';
-import Wrapper from '../assets/wrappers/RegisterPage';
-import { useEffect, useState } from 'react';
-import getFormValues from '../utils/getFormValues';
-import { toast } from 'react-toastify';
-import { useGlobalContext } from '../context';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
-const Register = () => {
-  const [isMember, setIsMember] = useState(true);
-  const { setUser } = useGlobalContext();
-  const navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { isEmpty, data } = getFormValues(e.currentTarget);
-
-    if (isEmpty) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-    try {
-      const endpoint = isMember
-        ? '/api/v1/auth/login'
-        : '/api/v1/auth/register';
-      const response = await axios.post(endpoint, data);
-      setUser(response.data);
-
-      const message = isMember ? 'Login successful' : 'Registration successful';
-      toast.success(message);
-      navigate('/');
-    } catch (error) {
-      toast.error(error.response.data.msg);
-      console.log(error);
-    }
-  };
-  return (
-    <Wrapper>
-      <form className='form' onSubmit={handleSubmit}>
-        <Logo />
-        <h4>{isMember ? 'Login' : 'Register'}</h4>
-        {!isMember && <FormRow type='text' name='name' />}
-        <FormRow type='email' name='email' />
-        <FormRow type='password' name='password' />
-        <button type='submit' className='btn btn-block'>
-          submit
-        </button>
-        <p>
-          {isMember ? 'Not a member yet?' : 'Already a member?'}
-          <button
-            type='button'
-            onClick={() => setIsMember(!isMember)}
-            className='member-btn'
-          >
-            {isMember ? 'Register' : 'Login'}
-          </button>
-        </p>
-      </form>
-    </Wrapper>
-  );
-};
-export default Register;
-```
-
-#### Dashboard Pages
-
-- create AddJob, AllJobs, Profile, Stats in pages directory
-- setup children
-
-App.jsx
-
-```js
-import {
-  Landing,
-  Error,
-  Dashboard,
-  Register,
-  Stats,
-  AllJobs,
-  AddJob,
-  Profile,
-} from './pages';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Dashboard />,
-    errorElement: <Error />,
-    children: [
-      {
-        path: 'stats',
-        element: <Stats />,
-      },
-      {
-        path: 'all-jobs',
-        element: <AllJobs />,
-      },
-      {
-        path: 'add-job',
-        element: <AddJob />,
-      },
-      {
-        path: 'profile',
-        element: <Profile />,
-      },
-    ],
-  },
-]);
-```
-
-Dashboard.jsx
-
-```js
-import { Link, Outlet } from 'react-router-dom';
-const Dashboard = () => {
-  return (
-    <div>
-      <nav>navbar</nav>
-
-      <Outlet />
-    </div>
-  );
-};
-
-export default Dashboard;
-```
-
-App.jsx
-
-```js
-children: [
-  {
-    index: true,
-    element: <Stats />,
-  },
-];
 ```
